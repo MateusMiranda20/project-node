@@ -8,6 +8,10 @@ app.use(express.json())
 
 const users = [];
 
+const myFirstMiddleware = (request, response, next) => {
+    
+}
+
 app.get('/users', (request, response) =>{
     return response.json(users)
 })
