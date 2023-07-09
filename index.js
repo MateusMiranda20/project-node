@@ -8,8 +8,20 @@ app.use(express.json())
 
 const users = [];
 
-const myFirstMiddleware = (request, response, next) => {
-    
+const myMiddleware = (request, response, next) => {
+    const { id } = request.params
+
+    const index = users.findIndex(usar => usar.id === id)
+
+    if (index < 0) {
+        return response.status(404).json({ message: "User not found"}) 
+    }
+
+
+    request.indexUser = index
+    request.idUser = id
+
+    next()
 }
 
 app.get('/users', (request, response) =>{
@@ -26,20 +38,14 @@ app.post('/users', (request, response) =>{
     return response.status(201).json(users)
 })
 
-app.put('/users/:id', (request, response) => {
-    
-    const { id } = request.params
+app.put('/users/:id', myMiddleware, (request, response) => {
     const { name, age } = request.body
+    const index = request.indexUser
+    const id = request.idUser 
 
     const usuariNovo = {id, name, age}
 
     //findIndex -> Permite encontrar informação nos array
-
-    const index = users.findIndex(usar => usar.id === id)
-
-    if (index < 0) {
-        return response.status(404).json({ message: "User not found"}) 
-    }
 
     users[index] = usuariNovo
 
@@ -47,14 +53,9 @@ app.put('/users/:id', (request, response) => {
 
 })
 
-app.delete('/users/:id', (request, response) => {
-    const { id } = request.params
-
-    const index = users.findIndex(usar => usar.id === id)
-
-    if (index < 0) {
-        return response.status(404).json({message: "Not found users"})
-    }
+app.delete('/users/:id', myMiddleware, (request, response) => {
+    const index = request.indexUser
+    const id = request.idUser 
 
     users.splice(index,1)
 
