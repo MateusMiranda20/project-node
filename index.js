@@ -1,10 +1,11 @@
-const express = require('express')
-const uuid = require('uuid')
+const express = require('express');
+const uuid = require('uuid');
+let cors = require('cors');
 
-
-const porta = 3000
+const porta = 3003;
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 const users = [];
 
@@ -35,7 +36,7 @@ app.post('/users', (request, response) =>{
 
     users.push(user)
 
-    return response.status(201).json(users)
+    return response.status(201).json(user)
 })
 
 app.put('/users/:id', myMiddleware, (request, response) => {
@@ -64,5 +65,5 @@ app.delete('/users/:id', myMiddleware, (request, response) => {
 
 
 app.listen(porta, ()=> {
-    console.log(' 😁 Servidor funcionando porta 3000 😁')
+    console.log(' 😁 Servidor funcionando porta 3003 😁')
 });
