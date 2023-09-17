@@ -5,6 +5,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
+    "start":"node index.js",
     "axios": "^1.4.0",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon"
